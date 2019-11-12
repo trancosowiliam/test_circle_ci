@@ -34,14 +34,14 @@ platform :android do
 #    slack_msg("🍻 `android` has passed all tests!")
   end
 
-  desc "Assemble Release Candidate"
-  lane :assemble_release_candidate do
+#  desc "Assemble Release Candidate"
+#  lane :assemble_release_candidate do
 #    slack_msg("⏳ Assembling release candidate build for `android`...")
-    build_android_app(task: "assembleRelease")
+#    build_android_app(task: "assembleRelease")
 #    send_fabric("android")
-    create_version_file()
+#    create_version_file()
 #    slack_test_msg()
-  end
+#  end
 end
 
 def slack_msg(message)

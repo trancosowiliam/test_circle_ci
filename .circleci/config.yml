@@ -48,17 +48,17 @@ references:
         bundle install &&
         bundle exec fastlane test_branch
 
-  assemble_release: &assemble_release_candidate
-    run:
-      name: Assemble Release Candidate
-      command: |
-        bundle install &&
-        bundle exec fastlane assemble_release_candidate
+#  assemble_release: &assemble_release_candidate
+#    run:
+#      name: Assemble Release Candidate
+#      command: |
+#        bundle install &&
+#        bundle exec fastlane assemble_release_candidate
 
-  save_apk_release: &save_apk_release
-    store_artifacts:
-      path: ./app/build/outputs/apk/release/app-release.apk
-      destination: apk
+#  save_apk_release: &save_apk_release
+#    store_artifacts:
+#      path: ./app/build/outputs/apk/release/app-release.apk
+#      destination: apk
 
 jobs:
   run-tests:
@@ -76,21 +76,21 @@ jobs:
       - *keep_artifacts_tests_scan
       - *keep_artifacts_logs
 
-  assemble-release-candidate:
-    docker:
-      - image: circleci/android:api-28-node8-alpha
-    working_directory: ~/CircleCI
-    steps:
-      - checkout
-      - *restore_gems_cache
-      - *create_secret_properties
-      - *install_bundle_fastlane
-      - *save_cache_gem
-      - *assemble_release_candidate
-      - *save_apk_release
-      - *keep_artifacts_tests
-      - *keep_artifacts_tests_scan
-      - *keep_artifacts_logs
+#  assemble-release-candidate:
+#    docker:
+#      - image: circleci/android:api-28-node8-alpha
+#    working_directory: ~/CircleCI
+#    steps:
+#      - checkout
+#      - *restore_gems_cache
+#      - *create_secret_properties
+#      - *install_bundle_fastlane
+#      - *save_cache_gem
+#      - *assemble_release_candidate
+#      - *save_apk_release
+#      - *keep_artifacts_tests
+#      - *keep_artifacts_tests_scan
+#      - *keep_artifacts_logs
 
 workflows:
   version: 2
@@ -103,13 +103,13 @@ workflows:
                 - /^hotfix.*/
                 - /^feature.*/
 
-  deliver-release-candidate:
-    jobs:
-      - run-tests:
-          filters:
-            branches:
-              only:
-                - develop
-      - assemble-release-candidate:
-          requires:
-            - run-tests
+#  deliver-release-candidate:
+#    jobs:
+#      - run-tests:
+#          filters:
+#            branches:
+#              only:
+#                - develop
+#      - assemble-release-candidate:
+#          requires:
+#            - run-tests
