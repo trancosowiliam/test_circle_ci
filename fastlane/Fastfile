@@ -1,0 +1,97 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+
+$SLACK_HOOK_URL = "https://hooks.slack.com/services/token"
+$SLACK_ICON_URL = "https://avatars.slack-edge.com/image"
+$SLACK_USERNAME = "🤖 Autobot Android"
+
+update_fastlane
+min_fastlane_version("2.112.0")
+default_platform(:android)
+
+platform :android do
+  desc "At any error, do:"
+  error do |lane, exception|
+#    slack_msg("💥 `android` " + exception.message)
+  end
+
+  desc "Run automated tests"
+  lane :test_branch do
+#    slack_msg("⏳ Testing `android` branch...")
+    gradle(
+      task: "test",
+      build_type: "ReleaseUnitTest",
+      flags: "--stacktrace --no-daemon"
+    )
+#    slack_msg("🍻 `android` has passed all tests!")
+  end
+
+  desc "Assemble Release Candidate"
+  lane :assemble_release_candidate do
+#    slack_msg("⏳ Assembling release candidate build for `android`...")
+    build_android_app(task: "assembleRelease")
+#    send_fabric("android")
+    create_version_file()
+#    slack_test_msg()
+  end
+end
+
+def slack_msg(message)
+  slack(
+    message: message,
+    username: $SLACK_USERNAME,
+    icon_url: $SLACK_ICON_URL,
+    slack_url: $SLACK_HOOK_URL,
+    default_payloads: [ :git_branch, :git_author ]
+  )
+end
+
+def slack_test_msg()
+  slack(
+    username: $SLACK_USERNAME,
+    icon_url: $SLACK_ICON_URL,
+    slack_url: $SLACK_HOOK_URL,
+    channel: '#qa_app',
+    default_payloads: [],
+    pretext: "Olá @channel, tem uma nova versão do app Android pronta para ser testada. \nEm caso de qualquer problema podem reportar aqui canal pois meus sistemas estão prontos para ativar nossos devs para solucionar qualquer situação.",
+    attachment_properties: {
+      fields: [
+        {
+          title: "Versão",
+          value: open("temp/versionName.txt").read()
+        },
+        {
+          title: "Número do build",
+          value: open("temp/versionCode.txt").read()
+        },
+        {
+          title: "Novidades nesse build:",
+          value: open("ReleaseNotes.txt").read()
+        }
+      ]
+    }
+  )
+end
+
+def send_fabric(group)
+  crashlytics(
+    api_token: ENV["FABRIC_API_KEY"],
+    build_secret: ENV["FABRIC_BUILD_SECRET"],
+    groups: group,
+    notes_path: "./fastlane/ReleaseNotes.txt"
+  )
+end
+
+def create_version_file()
+  gradle(
+    task: "createVersionFile"
+  )
+end
