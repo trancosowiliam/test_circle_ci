@@ -64,7 +64,7 @@ jobs:
   run-tests:
     docker:
       - image: circleci/android:api-28-node8-alpha
-    working_directory: ~/consulta_remedios_android
+    working_directory: ~/CircleCI
     steps:
       - checkout
       - *restore_gems_cache
@@ -79,7 +79,7 @@ jobs:
   assemble-release-candidate:
     docker:
       - image: circleci/android:api-28-node8-alpha
-    working_directory: ~/consulta_remedios_android
+    working_directory: ~/CircleCI
     steps:
       - checkout
       - *restore_gems_cache
