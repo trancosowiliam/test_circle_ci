@@ -1,4 +1,4 @@
-version: 2.1
+version: 2
 
 references:
   gems_key: &gems_key
@@ -31,10 +31,10 @@ references:
     store_test_results:
       path: test_output/report.xml
 
-    keep_artifacts_tests_scan: &keep_artifacts_tests_scan
-      store_artifacts:
-        path: /tmp/test-results
-        destination: scan-test-results
+  keep_artifacts_tests_scan: &keep_artifacts_tests_scan
+    store_artifacts:
+      path: /tmp/test-results
+      destination: scan-test-results
 
   keep_artifacts_logs: &keep_artifacts_logs
     store_artifacts:
@@ -100,6 +100,7 @@ workflows:
           filters:
             branches:
               only:
+                - /^hotfix.*/
                 - /^feature.*/
 
 #  deliver-release-candidate:
