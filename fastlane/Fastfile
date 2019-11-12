@@ -27,9 +27,7 @@ platform :android do
   lane :test_branch do
 #    slack_msg("⏳ Testing `android` branch...")
     gradle(
-      task: "test",
-      build_type: "ReleaseUnitTest",
-      flags: "--stacktrace --no-daemon"
+      task: "test"
     )
 #    slack_msg("🍻 `android` has passed all tests!")
   end
