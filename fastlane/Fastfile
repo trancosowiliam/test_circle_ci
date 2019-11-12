@@ -27,19 +27,21 @@ platform :android do
   lane :test_branch do
 #    slack_msg("⏳ Testing `android` branch...")
     gradle(
-      task: "test"
+      task: "test",
+      build_type: "ReleaseUnitTest",
+      flags: "--stacktrace --no-daemon"
     )
 #    slack_msg("🍻 `android` has passed all tests!")
   end
 
-#  desc "Assemble Release Candidate"
-#  lane :assemble_release_candidate do
-#    slack_msg("⏳ Assembling release candidate build for `android`...")
-#    build_android_app(task: "assembleRelease")
-#    send_fabric("android")
-#    create_version_file()
-#    slack_test_msg()
-#  end
+  desc "Assemble Release Candidate"
+  lane :assemble_release_candidate do
+    slack_msg("⏳ Assembling release candidate build for `android`...")
+    build_android_app(task: "assembleRelease")
+    send_fabric("android")
+    create_version_file()
+    slack_test_msg()
+  end
 end
 
 def slack_msg(message)
