@@ -100,7 +100,6 @@ workflows:
           filters:
             branches:
               only:
-                - /^hotfix.*/
                 - /^feature.*/
 
 #  deliver-release-candidate:
