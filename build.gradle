@@ -35,10 +35,10 @@ task createVersionFile {
 }
 
 task createReleaseApp(type: Copy) {
+    delete "beta"
     mkdir "beta"
-    delete "beta/app-v${rootProject.ext.tools.versionCode}.apk"
 
     from file("app/build/outputs/apk/release/app-release-unsigned.apk")
     into file("beta")
-    rename 'app-release-unsigned.apk', "app-v${rootProject.ext.tools.versionCode}.apk"
+    rename 'app-release-unsigned.apk', "app-${new Date().format("yyyyMMddHHmmss")}.apk"
 }
