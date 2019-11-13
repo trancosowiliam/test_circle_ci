@@ -36,6 +36,7 @@ task createVersionFile {
 
 task createReleaseApp(type: Copy) {
     mkdir "beta"
+    delete "beta/app-v${rootProject.ext.tools.versionCode}.apk"
 
     from file("app/build/outputs/apk/release/app-release-unsigned.apk")
     into file("beta")
