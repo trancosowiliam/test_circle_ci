@@ -1,0 +1,73 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+
+update_fastlane
+min_fastlane_version("2.112.0")
+default_platform(:android)
+
+platform :android do
+  desc "At any error, do:"
+  error do |lane, exception|
+  notify_server("android: " + exception.message)
+  end
+
+  desc "Run automated tests"
+  lane :test_branch do
+    notify_server("Running android JUnit Tests...")
+    gradle(
+      task: "test",
+      build_type: "ReleaseUnitTest",
+      flags: "--stacktrace --no-daemon"
+    )
+    notify_server("has passed all android tests!")
+  end
+
+  desc "Assemble Release Candidate"
+  lane :assemble_release_candidate do
+    notify_server("Assembling release candidate build for android")
+    build_android_app(task: "assembleRelease")
+    create_version_file()
+#    send_fabric("android")
+    send_qa_message()
+  end
+end
+
+def notify_server(message)
+  post_curl = "curl -X POST"
+  base_url = "https://trancosowiliam.herokuapp.com/api/logci"
+  parameters = "-d '{ \"message\":\"#{message}\", \"project\":\"circle_ci_test\"}'"
+  sh("#{post_curl} #{base_url} #{parameters}")
+end
+
+def notify_server_qa_message()
+  version = open("temp/versionName.txt").read()
+  build = open("temp/versionCode.txt").read()
+  message = "Tem uma nova versão do app Android pronta para ser testada. \nEm caso de qualquer problema podem reportar via github, meus sistemas estão prontos para ativar nossos devs para solucionar qualquer situação\nVersão: #{version}; Número do build: #{build}"
+  post_curl = "curl -X POST"
+  base_url = "https://trancosowiliam.herokuapp.com/api/logci"
+  parameters = "-d '{ \"message\":\"#{message}\", \"project\":\"circle_ci_test\"}'"
+  sh("#{post_curl} #{base_url} #{parameters}")
+end
+
+#def send_fabric(group)
+#  crashlytics(
+#    api_token: ENV["FABRIC_API_KEY"],
+#    build_secret: ENV["FABRIC_BUILD_SECRET"],
+#    groups: group,
+#    notes_path: "./fastlane/ReleaseNotes.txt"
+#  )
+#end
+
+def create_version_file()
+  gradle(
+    task: "createVersionFile"
+  )
+end
