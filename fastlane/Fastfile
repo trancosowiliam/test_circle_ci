@@ -21,18 +21,18 @@ platform :android do
 
   desc "Run automated tests"
   lane :test_branch do
-    notify_server("Running android JUnit Tests branch #{git_branch}...")
+    notify_server("[Android]Rodando os testes de unidade na branch #{git_branch}...")
     gradle(
       task: "test",
       build_type: "ReleaseUnitTest",
       flags: "--stacktrace --no-daemon"
     )
-    notify_server("has passed all #{git_branch} tests!")
+    notify_server("[Android] a branch #{git_branch} passou em todos os testes!")
   end
 
   desc "Assemble Release Candidate"
   lane :assemble_release_candidate do
-    notify_server("Assembling release candidate build for android")
+    notify_server("[Android]Criando a aplicacao canditada para lancamento...")
     build_android_app(task: "assembleRelease")
     create_version_file()
 #    send_fabric("android")
