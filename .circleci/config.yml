@@ -105,17 +105,14 @@ workflows:
 
   deliver-release-candidate:
     jobs:
-      steps:
-        - add_ssh_keys:
-            fingerprints:
-              - "fb:00:bc:28:13:fc:fe:5e:b4:e8:8d:f7:7f:2a:44:82"
-        - run-tests:
-            filters:
-              branches:
-                only:
-                  - develop
-                  - /^hotfix.*/
-                  - /^feature.*/
-        - assemble-release-candidate:
-            requires:
+      - run-tests:
+          filters:
+            branches:
+              only:
+                - develop
+                - /^hotfix.*/
+                - /^feature.*/
+      - assemble-release-candidate:
+          requires:
+            - run-tests
               - run-tests
