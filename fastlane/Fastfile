@@ -16,7 +16,7 @@ default_platform(:android)
 platform :android do
   desc "At any error, do:"
   error do |lane, exception|
-  notify_server("android: " + exception.message)
+  notify_server("android error: " + exception.message)
   end
 
   desc "Run automated tests"
@@ -36,7 +36,7 @@ platform :android do
     build_android_app(task: "assembleRelease")
     create_version_file()
 #    send_fabric("android")
-    send_qa_message()
+    notify_server_qa_message()
   end
 end
 
