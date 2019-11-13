@@ -16,7 +16,7 @@ default_platform(:android)
 platform :android do
   desc "At any error, do:"
   error do |lane, exception|
-  notify_server(android: " + exception.message)
+  notify_server("android: " + exception.message)
   end
 
   desc "Run automated tests"
