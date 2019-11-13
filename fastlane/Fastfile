@@ -9,7 +9,7 @@
 #
 #     https://docs.fastlane.tools/plugins/available-plugins
 
-$SLACK_HOOK_URL = "https://hooks.slack.com/services/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"
+$SLACK_HOOK_URL = "https://hooks.slack.com/services/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"
 $SLACK_ICON_URL = "https://avatars.slack-edge.com/image"
 $SLACK_USERNAME = "🤖 Autobot Android"
 
