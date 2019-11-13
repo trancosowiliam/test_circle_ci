@@ -115,4 +115,3 @@ workflows:
       - assemble-release-candidate:
           requires:
             - run-tests
-              - run-tests
