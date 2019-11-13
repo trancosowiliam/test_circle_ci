@@ -91,7 +91,7 @@ def commit_changes()
 
   git_commit(
     path: "./beta/app-v#{versionCode}.apk",
-    message: "Deploy version #{versionCode}",
+    message: "[ci skip] Deploy version #{versionCode}",
     skip_git_hooks: true
   )
 
