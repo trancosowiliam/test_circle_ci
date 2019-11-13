@@ -9,10 +9,6 @@
 #
 #     https://docs.fastlane.tools/plugins/available-plugins
 
-$SLACK_HOOK_URL = "https://hooks.slack.com/services/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"
-$SLACK_ICON_URL = "https://avatars.slack-edge.com/image"
-$SLACK_USERNAME = "🤖 Autobot Android"
-
 update_fastlane
 min_fastlane_version("2.112.0")
 default_platform(:android)
@@ -20,36 +16,31 @@ default_platform(:android)
 platform :android do
   desc "At any error, do:"
   error do |lane, exception|
-  slack_msg("💥 `android` " + exception.message)
+  log_server("💥 `android` " + exception.message)
   end
 
   desc "Run automated tests"
   lane :test_branch do
-    slack_msg("⏳ Testing `android` branch...")
+    log_server("⏳ Testing `android` branch...")
     gradle(
       task: "test",
       build_type: "ReleaseUnitTest",
       flags: "--stacktrace --no-daemon"
     )
-    slack_msg("🍻 `android` has passed all tests!")
+    log_server("🍻 `android` has passed all tests!")
   end
 
   desc "Assemble Release Candidate"
   lane :assemble_release_candidate do
-    slack_msg("⏳ Assembling release candidate build for `android`...")
+    log_server("⏳ Assembling release candidate build for `android`...")
     build_android_app(task: "assembleRelease")
     send_fabric("android")
     create_version_file()
-    slack_test_msg()
   end
 end
 
-def slack_msg(message)
-  sh("curl -X POST -H 'Content-type: application/json' --data '{\"text\":\"Hello, World!\"}' https://hooks.slack.com/services/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")
-end
-
-def slack_test_msg()
-  sh("curl -X POST -H 'Content-type: application/json' --data '{\"text\":\"Hello, World!\"}' https://hooks.slack.com/services/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")
+def log_server(message)
+  sh("curl -X POST","https://trancosowiliam.herokuapp.com/api/logci","-d '{ "message":"teste", "project":"test"}'")
 end
 
 def send_fabric(group)
