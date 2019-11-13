@@ -9,7 +9,7 @@
 #
 #     https://docs.fastlane.tools/plugins/available-plugins
 
-$SLACK_HOOK_URL = "https://hooks.slack.com/services/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"
+$SLACK_HOOK_URL = "https://hooks.slack.com/services/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"
 $SLACK_ICON_URL = "https://avatars.slack-edge.com/image"
 $SLACK_USERNAME = "🤖 Autobot Android"
 
@@ -45,17 +45,11 @@ platform :android do
 end
 
 def slack_msg(message)
-  slack(
-    message: message,
-    slack_url: $SLACK_HOOK_URL
-  )
+  sh("curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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")
 end
 
 def slack_test_msg()
-  slack(
-    slack_url: $SLACK_HOOK_URL,
-    message: $SLACK_HOOK_URL
-  )
+  sh("curl -X POST -H 'Content-type: application/json' --data '{"text":"Hello, World!"}' https://hooks.slack.com/services/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")
 end
 
 def send_fabric(group)
