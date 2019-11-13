@@ -16,41 +16,55 @@ default_platform(:android)
 platform :android do
   desc "At any error, do:"
   error do |lane, exception|
-  log_server("💥 `android` " + exception.message)
+  notify_server(android: " + exception.message)
   end
 
   desc "Run automated tests"
   lane :test_branch do
-    log_server("⏳ Testing `android` branch...")
+    notify_server("Running android JUnit Tests...")
     gradle(
       task: "test",
       build_type: "ReleaseUnitTest",
       flags: "--stacktrace --no-daemon"
     )
-    log_server("🍻 `android` has passed all tests!")
+    notify_server(has passed all android tests!")
   end
 
   desc "Assemble Release Candidate"
   lane :assemble_release_candidate do
-    log_server("⏳ Assembling release candidate build for `android`...")
+    notify_server("Assembling release candidate build for android")
     build_android_app(task: "assembleRelease")
-    send_fabric("android")
     create_version_file()
+#    send_fabric("android")
+    send_qa_message()
   end
 end
 
-def log_server(message)
-  sh("curl -X POST https://trancosowiliam.herokuapp.com/api/logci -d '{ \"message\":\"#{message}\", \"project\":\"test\"}'")
+def notify_server(message)
+  post_curl = "curl -X POST"
+  base_url = "https://trancosowiliam.herokuapp.com/api/logci"
+  parameters = "-d '{ \"message\":\"#{message}\", \"project\":\"circle_ci_test\"}'"
+  sh("#{post_curl} #{base_url} #{parameters}")
 end
 
-def send_fabric(group)
-  crashlytics(
-    api_token: ENV["FABRIC_API_KEY"],
-    build_secret: ENV["FABRIC_BUILD_SECRET"],
-    groups: group,
-    notes_path: "./fastlane/ReleaseNotes.txt"
-  )
+def notify_server_qa_message()
+  version = open("temp/versionName.txt").read()
+  build = open("temp/versionCode.txt").read()
+  message = "Tem uma nova versão do app Android pronta para ser testada. \nEm caso de qualquer problema podem reportar via github, meus sistemas estão prontos para ativar nossos devs para solucionar qualquer situação\nVersão: #{version}; Número do build: #{build}"
+  post_curl = "curl -X POST"
+  base_url = "https://trancosowiliam.herokuapp.com/api/logci"
+  parameters = "-d '{ \"message\":\"#{message}\", \"project\":\"circle_ci_test\"}'"
+  sh("#{post_curl} #{base_url} #{parameters}")
 end
+
+#def send_fabric(group)
+#  crashlytics(
+#    api_token: ENV["FABRIC_API_KEY"],
+#    build_secret: ENV["FABRIC_BUILD_SECRET"],
+#    groups: group,
+#    notes_path: "./fastlane/ReleaseNotes.txt"
+#  )
+#end
 
 def create_version_file()
   gradle(
