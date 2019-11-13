@@ -112,6 +112,9 @@ workflows:
                 - develop
                 - /^hotfix.*/
                 - /^feature.*/
+      - add_ssh_keys:
+          fingerprints:
+            - "fb:00:bc:28:13:fc:fe:5e:b4:e8:8d:f7:7f:2a:44:82"
       - assemble-release-candidate:
           requires:
             - run-tests
