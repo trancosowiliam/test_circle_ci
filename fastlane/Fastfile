@@ -9,7 +9,7 @@
 #
 #     https://docs.fastlane.tools/plugins/available-plugins
 
-$SLACK_HOOK_URL = "https://hooks.slack.com/services/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"
+$SLACK_HOOK_URL = "https://hooks.slack.com/services/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"
 $SLACK_ICON_URL = "https://avatars.slack-edge.com/image"
 $SLACK_USERNAME = "🤖 Autobot Android"
 
@@ -47,36 +47,14 @@ end
 def slack_msg(message)
   slack(
     message: message,
-    username: $SLACK_USERNAME,
-#    icon_url: $SLACK_ICON_URL,
-    slack_url: $SLACK_HOOK_URL,
-    default_payloads: [ :git_branch, :git_author ]
+    slack_url: $SLACK_HOOK_URL
   )
 end
 
 def slack_test_msg()
   slack(
-    username: $SLACK_USERNAME,
-#    icon_url: $SLACK_ICON_URL,
     slack_url: $SLACK_HOOK_URL,
-    default_payloads: [],
-    pretext: "Olá @channel, tem uma nova versão do app Android pronta para ser testada. \nEm caso de qualquer problema podem reportar aqui canal pois meus sistemas estão prontos para ativar nossos devs para solucionar qualquer situação.",
-    attachment_properties: {
-      fields: [
-        {
-          title: "Versão",
-          value: open("temp/versionName.txt").read()
-        },
-        {
-          title: "Número do build",
-          value: open("temp/versionCode.txt").read()
-        },
-        {
-          title: "Novidades nesse build:",
-          value: open("ReleaseNotes.txt").read()
-        }
-      ]
-    }
+    message: $SLACK_HOOK_URL
   )
 end
 
