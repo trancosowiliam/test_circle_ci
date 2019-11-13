@@ -57,7 +57,7 @@ references:
 
   save_apk_release: &save_apk_release
     store_artifacts:
-      path: ./app/build/outputs/apk/release/app-release.apk
+      path: ./app/build/outputs/apk/release/app-release-unsigned.apk
       destination: apk
 
 jobs:
