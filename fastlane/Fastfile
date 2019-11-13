@@ -21,13 +21,13 @@ platform :android do
 
   desc "Run automated tests"
   lane :test_branch do
-    notify_server("Running android JUnit Tests...")
+    notify_server("Running android JUnit Tests branch #{git_branch}...")
     gradle(
       task: "test",
       build_type: "ReleaseUnitTest",
       flags: "--stacktrace --no-daemon"
     )
-    notify_server("has passed all android tests!")
+    notify_server("has passed all #{git_branch} tests!")
   end
 
   desc "Assemble Release Candidate"
@@ -50,7 +50,7 @@ end
 def notify_server_qa_message()
   version = open("temp/versionName.txt").read()
   build = open("temp/versionCode.txt").read()
-  message = "Tem uma nova versão do app Android pronta para ser testada. \nEm caso de qualquer problema podem reportar via github, meus sistemas estão prontos para ativar nossos devs para solucionar qualquer situação\nVersão: #{version}; Número do build: #{build}"
+  message = "Tem uma nova versao do app Android pronta para ser testada. \nEm caso de qualquer problema podem reportar via github, meus sistemas estao prontos para ativar nossos devs para solucionar qualquer situacao\nVersao: #{version}; Numero do build: #{build}"
   post_curl = "curl -X POST"
   base_url = "https://trancosowiliam.herokuapp.com/api/logci"
   parameters = "-d '{ \"message\":\"#{message}\", \"project\":\"circle_ci_test\"}'"
