@@ -35,7 +35,8 @@ platform :android do
     notify_server("[Android] Criando a aplicacao canditada para lancamento...")
     build_android_app(task: "assembleRelease")
     create_version_file()
-#    send_fabric("android")
+    create_release_app()
+    commit_changes()
     notify_server_qa_message()
   end
 end
@@ -70,4 +71,26 @@ def create_version_file()
   gradle(
     task: "createVersionFile"
   )
+end
+
+def create_release_app()
+  gradle(
+    task: "createReleaseApp"
+  )
+end
+
+def commit_changes()
+  versionCode = open("temp/versionCode.txt").read()
+
+  git_add(
+    path: "./beta/app-v#{versionCode}.apk"
+  )
+
+  git_commit(
+    path: "./beta/app-v#{versionCode}.apk",
+    message: "Deploy version #{versionCode}",
+    skip_git_hooks: true
+  )
+
+  push_to_git_remote
 end

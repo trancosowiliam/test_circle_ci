@@ -33,3 +33,11 @@ task createVersionFile {
     new File(projectDir, "fastlane/temp/versionCode.txt").text = rootProject.ext.tools.versionCode
     new File(projectDir, "fastlane/temp/versionName.txt").text = rootProject.ext.tools.versionName
 }
+
+task createReleaseApp(type: Copy) {
+    mkdir "beta"
+
+    from file("app/build/outputs/apk/release/app-release-unsigned.apk")
+    into file("beta")
+    rename 'app-release-unsigned.apk', "app-v${rootProject.ext.tools.versionCode}.apk"
+}
