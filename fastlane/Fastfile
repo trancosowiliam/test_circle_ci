@@ -27,7 +27,7 @@ platform :android do
       build_type: "ReleaseUnitTest",
       flags: "--stacktrace --no-daemon"
     )
-    notify_server(has passed all android tests!")
+    notify_server("has passed all android tests!")
   end
 
   desc "Assemble Release Candidate"
