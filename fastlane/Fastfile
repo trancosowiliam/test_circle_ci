@@ -79,15 +79,12 @@ end
 def commit_changes()
   versionCode = open("temp/versionCode.txt").read()
 
-  sh("git config --global user.name \"cicleci\"")
-  sh("git config --global user.email \"cicleci@circle.com\"")
-
   git_add(
-    path: "./beta/app-v#{versionCode}.apk"
+    path: "./beta/"
   )
 
   git_commit(
-    path: "./beta/app-v#{versionCode}.apk",
+    path: "./beta/",
     message: "[ci skip] Deploy version #{versionCode}",
     skip_git_hooks: true
   )
