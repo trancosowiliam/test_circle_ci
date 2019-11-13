@@ -16,7 +16,7 @@ default_platform(:android)
 platform :android do
   desc "At any error, do:"
   error do |lane, exception|
-  notify_server("android error: " + exception.message)
+  notify_server("Algo deu errado...)
   end
 
   desc "Run automated tests"
@@ -83,7 +83,7 @@ def commit_changes()
   versionCode = open("temp/versionCode.txt").read()
 
   sh("git config --global user.name \"cicleci\"")
-  sh("git config --global user.email \"cicleci@cicleci.com\"")
+  sh("git config --global user.email \"cicleci@circle.com\"")
 
   git_add(
     path: "./beta/app-v#{versionCode}.apk"
