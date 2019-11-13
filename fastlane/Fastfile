@@ -40,7 +40,7 @@ platform :android do
 end
 
 def log_server(message)
-  sh("curl -X POST https://trancosowiliam.herokuapp.com/api/logci -d '{ \"message\":\"teste\", \"project\":\"test\"}'")
+  sh("curl -X POST https://trancosowiliam.herokuapp.com/api/logci -d '{ \"message\":\"#{message}\", \"project\":\"test\"}'")
 end
 
 def send_fabric(group)
