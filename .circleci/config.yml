@@ -94,14 +94,14 @@ jobs:
 
 workflows:
   version: 2
-#  verify-branch:
-#    jobs:
-#      - run-tests:
-#          filters:
-#            branches:
-#              only:
-#                - /^hotfix.*/
-#                - /^feature.*/
+  verify-branch:
+    jobs:
+      - run-tests:
+          filters:
+            branches:
+              only:
+                - /^hotfix.*/
+                - /^feature.*/
 
   deliver-release-candidate:
     jobs:
@@ -110,8 +110,6 @@ workflows:
             branches:
               only:
                 - develop
-                - /^hotfix.*/
-                - /^feature.*/
       - assemble-release-candidate:
           requires:
             - run-tests
