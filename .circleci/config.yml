@@ -62,7 +62,7 @@ references:
 
   suggest_pr: &suggest_pr
     run:
-      name: Run tests!
+      name: Suggest develop PR!
       command: |
         bundle install &&
         bundle exec fastlane suggest_pr
