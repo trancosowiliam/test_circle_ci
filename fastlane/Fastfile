@@ -44,7 +44,7 @@ platform :android do
 
   desc "Suggest PR"
   lane :suggest_pr do
-    notify_server("[Android] <a href="#{$GIT_REPO}/compare/develop...#{git_branch}?expand=1" target="_blank">Fazer PR para develop</a>")
+    notify_server("[Android] <a href=\"#{$GIT_REPO}/compare/develop...#{git_branch}?expand=1\" target=\"_blank\">Fazer PR para develop</a>")
   end
 end
 
