@@ -60,6 +60,13 @@ references:
       path: ./app/build/outputs/apk/release/app-release-unsigned.apk
       destination: apk
 
+  suggest_pr: &suggest_pr
+    run:
+      name: Run tests!
+      command: |
+        bundle install &&
+        bundle exec fastlane suggest_pr
+
 jobs:
   run-tests:
     docker:
@@ -92,6 +99,17 @@ jobs:
       - *keep_artifacts_tests_scan
       - *keep_artifacts_logs
 
+  suggest_pr:
+    docker:
+      - image: circleci/android:api-29-node
+    working_directory: ~/CircleCI
+    steps:
+      - checkout
+      - *restore_gems_cache
+      - *install_bundle_fastlane
+      - *save_cache_gem
+      - *suggest_pr
+
 workflows:
   version: 2
   verify-branch:
@@ -102,6 +120,9 @@ workflows:
               only:
                 - /^hotfix.*/
                 - /^feature.*/
+      - suggest_pr:
+          requires:
+            - run-tests
 
   deliver-release-candidate:
     jobs:
