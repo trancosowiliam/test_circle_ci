@@ -50,22 +50,29 @@ references:
 
   assemble_release: &assemble_release_candidate
     run:
-      name: Assemble Release Candidate
+      name: Assemble Release Candidate!
       command: |
         bundle install &&
         bundle exec fastlane assemble_release_candidate
+
+  assemble_feature: &assemble_feature
+    run:
+      name: Assemble Feature!
+      command: |
+        bundle install &&
+        bundle exec fastlane assemble_feature
+
+  assemble-hotfix: &assemble-hotfix
+    run:
+      name: Assemble Hotfix!
+      command: |
+        bundle install &&
+        bundle exec fastlane assemble-hotfix
 
   save_apk_release: &save_apk_release
     store_artifacts:
       path: ./app/build/outputs/apk/release/app-release-unsigned.apk
       destination: apk
-
-  suggest_pr: &suggest_pr
-    run:
-      name: Suggest develop PR!
-      command: |
-        bundle install &&
-        bundle exec fastlane suggest_pr
 
 jobs:
   run-tests:
@@ -99,7 +106,7 @@ jobs:
       - *keep_artifacts_tests_scan
       - *keep_artifacts_logs
 
-  suggest_pr:
+  assemble-feature:
     docker:
       - image: circleci/android:api-29-node
     working_directory: ~/CircleCI
@@ -108,7 +115,18 @@ jobs:
       - *restore_gems_cache
       - *install_bundle_fastlane
       - *save_cache_gem
-      - *suggest_pr
+      - *assemble_feature
+
+  assemble-hotfix:
+    docker:
+      - image: circleci/android:api-29-node
+    working_directory: ~/CircleCI
+    steps:
+      - checkout
+      - *restore_gems_cache
+      - *install_bundle_fastlane
+      - *save_cache_gem
+      - *assemble-hotfix
 
 workflows:
   version: 2
@@ -119,8 +137,18 @@ workflows:
             branches:
               only:
                 - /^hotfix.*/
+      - assemble-hotfix:
+          requires:
+            - run-tests
+
+  deliver-feature:
+    jobs:
+      - run-tests:
+          filters:
+            branches:
+              only:
                 - /^feature.*/
-      - suggest_pr:
+      - assemble-feature:
           requires:
             - run-tests
 
