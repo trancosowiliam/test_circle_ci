@@ -50,7 +50,7 @@ platform :android do
   end
 
   desc "Assemble Hotfix"
-  lane :assemble-hotfix do
+  lane :assemble_hotfix do
     notify_server("[Android] Fazer PR para master: #{$GIT_REPO}/compare/master...#{git_branch}?expand=1")
   end
 end

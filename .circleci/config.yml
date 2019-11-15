@@ -62,12 +62,12 @@ references:
         bundle install &&
         bundle exec fastlane assemble_feature
 
-  assemble-hotfix: &assemble-hotfix
+  assemble-hotfix: &assemble_hotfix
     run:
       name: Assemble Hotfix!
       command: |
         bundle install &&
-        bundle exec fastlane assemble-hotfix
+        bundle exec fastlane assemble_hotfix
 
   save_apk_release: &save_apk_release
     store_artifacts:
@@ -126,7 +126,7 @@ jobs:
       - *restore_gems_cache
       - *install_bundle_fastlane
       - *save_cache_gem
-      - *assemble-hotfix
+      - *assemble_hotfix
 
 workflows:
   version: 2
