@@ -44,9 +44,9 @@ platform :android do
 
   desc "Assemble Feature"
   lane :assemble_feature do
-    notify_server("#{open("ReleaseNotes.txt").read()}")
     notify_server("[Android] Branch atualizada: #{$GIT_REPO}/tree/#{git_branch}")
     notify_server("[Android] Fazer PR para develop: #{$GIT_REPO}/compare/develop...#{git_branch}?expand=1")
+    notify_server("[ReleaseNotes]: #{open("ReleaseNotes.txt").read()}")
   end
 
   desc "Assemble Hotfix"
